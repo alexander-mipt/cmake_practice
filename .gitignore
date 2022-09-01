@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Folders
+targets_and_dependencies/build/

@@ -1,0 +1,5 @@
+set(LIB_SRC lib_calc.cxx)
+add_library(lib_calc SHARED ${LIB_SRC})
+target_include_directories(lib_calc INTERFACE ${CMAKE_SOURCE_DIR}/include/lib_calc)
+target_link_directories(lib_calc INTERFACE ${CMAKE_SOURCE_DIR}/lib/lib_calc)
+target_compile_options(lib_calc INTERFACE -Wall -O0 PRIVATE -Wextra -O2)
