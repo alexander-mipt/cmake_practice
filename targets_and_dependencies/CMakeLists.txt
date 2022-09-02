@@ -5,7 +5,8 @@ project(Tutorial VERSION 1.0)
 
 # add cache bool vars
 option(USE_LIB_PRINT "Use print lib" ON)
-option(USE_LIB_CALC "USe calc lib" ON)
+option(USE_LIB_CALC "Use calc lib" ON)
+option(USE_LIB_ARCH "Use arch lib" ON)
 
 set(INCLUDE_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LIB_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -22,6 +23,10 @@ if(USE_LIB_CALC)
 	#list(APPEND INCLUDE_DIRS "${INCLUDE_PREFIX}/lib_calc")
 	add_subdirectory("${LIB_PREFIX}/lib_calc")
 	list(APPEND LIBS lib_calc)
+endif()
+if(USE_LIB_ARCH)
+	add_subdirectory("${LIB_PREFIX}/lib_arch")
+	list(APPEND LIBS lib_arch)
 endif()
 
 configure_file(${INCLUDE_PREFIX}/TutorialConfig.hpp.in ${INCLUDE_PREFIX}/TutorialConfig.hpp)
@@ -49,3 +54,29 @@ install(DIRECTORY ${INCLUDE_PREFIX} DESTINATION ${CMAKE_INSTALL_PREFIX})
 message(STATUS ${CMAKE_BINARY_DIR})
 message(STATUS ${CMAKE_CURRENT_BINARY_DIR})
 message(STATUS ${CMAKE_CURRENT_SOURCE_DIR})
+
+# tests
+enable_testing()
+
+# does the application run
+add_test(NAME Runs COMMAND Tutorial)
+
+# does the usage message work?
+add_test(NAME Usage COMMAND Tutorial 3)
+set_tests_properties(Usage
+  PROPERTIES PASS_REGULAR_EXPRESSION "hi\n2\nHello 1\n3"
+  )
+
+# define a function to simplify adding tests
+function(do_test target arg result)
+  add_test(NAME Comp${arg} COMMAND ${target} ${arg})
+  set_tests_properties(Comp${arg}
+    PROPERTIES PASS_REGULAR_EXPRESSION ${result}
+    )
+endfunction()
+
+# do a bunch of result based tests
+set(STR "hi\n2\nHello 1\n")
+do_test(Tutorial 4 "${STR}4")
+do_test(Tutorial 9 "${STR}9")
+do_test(Tutorial 5 "${STR}5")

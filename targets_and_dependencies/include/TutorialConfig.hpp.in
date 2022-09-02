@@ -2,6 +2,7 @@
 // the configured options and settings for Tutorial
 #cmakedefine USE_LIB_PRINT
 #cmakedefine USE_LIB_CALC
+#cmakedefine USE_LIB_ARCH
 #define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
 #define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
 
